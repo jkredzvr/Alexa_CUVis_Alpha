@@ -1,0 +1,6 @@
+CommandIntent please {commands} {variableone}
+CommandIntent please {commands} {variableone} and {variabletwo}
+CommandIntent please {commands} {variableone}, {variabletwo} and {variablethree}
+CommandIntent please {commands} {variableone}, {variabletwo}, {variablethree}, and {variablefour}
+
+RandomIntent random words

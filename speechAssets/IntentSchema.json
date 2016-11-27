@@ -1,0 +1,38 @@
+{
+  "intents": [
+    {
+      "intent": "CommandIntent",
+      "slots": [
+        {
+          "name": "commands",
+          "type": "LIST_OF_COMMANDS"
+        },
+        {
+          "name": "continents",
+          "type": "LIST_OF_CONTINENTS"
+        }
+        ,
+        {
+          "name": "variable1",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "variable2",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "variable3",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "variable4",
+          "type": "LIST_OF_VARIABLES"
+        },
+      ]
+    },
+    {
+      "intent": "HelpIntent",
+      "slots": []
+    }
+  ]
+}
