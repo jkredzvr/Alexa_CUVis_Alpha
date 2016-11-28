@@ -1,6 +1,22 @@
-CommandIntent please {commands} {variableone}
-CommandIntent please {commands} {variableone} and {variabletwo}
-CommandIntent please {commands} {variableone}, {variabletwo} and {variablethree}
-CommandIntent please {commands} {variableone}, {variabletwo}, {variablethree}, and {variablefour}
+CommandIntent please {commands} {VariableOne}
+CommandIntent please {commands} {VariableOne} and {VariableTwo}
+CommandIntent please {commands} {VariableOne}, {VariableTwo} and {VariableThree}
+CommandIntent please {commands} {VariableOne}, {VariableTwo}, {VariableThree}
+
+FullQueryIntent show me {VariableOne}, for {ContinentOne}, {ContinentTwo}, {ContinentThree}.
+FullQueryIntent show me {VariableOne}, {VariableTwo}, for {ContinentOne}, {ContinentTwo}, {ContinentThree}.
+FullQueryIntent show me {VariableOne}, {VariableTwo}, {VariableThree}, for {ContinentOne}, {ContinentTwo}, {ContinentThree}.
+
+FullQueryIntent show me {VariableOne}, {VariableTwo}, {VariableThree}, for {ContinentOne}.
+FullQueryIntent show me {VariableOne}, {VariableTwo}, {VariableThree}, for {ContinentOne}, {ContinentTwo}.
+FullQueryIntent show me {VariableOne}, {VariableTwo}, {VariableThree}, for {ContinentOne}, {ContinentTwo}, {ContinentThree}.
+
+ContinentQueryIntent show me {ContinentOne}.
+ContinentQueryIntent show me {ContinentOne}, {ContinentTwo}.
+ContinentQueryIntent show me {ContinentOne}, {ContinentTwo}, {ContinentThree}.
+
+VariableQueryIntent show me {VariableOne}.
+VariableQueryIntent show me {VariableOne}, {VariableTwo}.
+VariableQueryIntent show me {VariableOne}, {VariableTwo}, {VariableThree}.
 
 RandomIntent random words
