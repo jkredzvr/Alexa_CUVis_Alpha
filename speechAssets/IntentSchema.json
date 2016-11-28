@@ -34,6 +34,19 @@
       ]
     },
     {
+      "intent": "TestIntent",
+      "slots": [
+        {
+          "name": "ContinentOne",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "VariableOne",
+          "type": "LIST_OF_VARIABLES"
+        }
+      ]
+    },
+    {
       "intent": "FullQueryIntent",
       "slots": [
         {
