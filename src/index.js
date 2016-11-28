@@ -36,6 +36,9 @@ CUVis.prototype.intentHandlers = {
     VariableQueryIntent: function(intent, session, response){
         handleVariableQueryIntent(intent, session, response);
     },
+    TestIntent: function(intent, session, response){
+        handleTestIntent(intent, session, response);
+    },
 
     HelpIntent: function(intent, session, response){
         var speechOutput = 'Get the distance from arrival for any NYC bus stop ID. ' +
@@ -69,13 +72,16 @@ var handleCommandRequest = function(intent, session, response){
   response.tellWithCard(text, cardHeading, cardText);
 };
 
+var handleTestIntent = function(intent, session, response){
+    //intent.slots.commands.value
+    var text = intent.slots.ContinentOne.value + ' was executed using the following variables ' + intent.slots.VariableOne.value;
+    var cardText = 'Test: ' + text;
+    var cardHeading = 'Testing';
+    response.tellWithCard(text, cardHeading, cardText);
+};
 
 var handleFullQueryIntent = function(intent, session, response){
     //intent.slots.commands.value
-    // var text = intent.slots.commands.value + ' was executed using the following variables ' + intent.slots.variableone.value + intent.slots.variabletwo.value + intent.slots.variablethree.value + intent.slots.variablefour.value;
-    // var cardText = 'Commanded: ' + text;
-    // var cardHeading = 'Commands ' +  intent.slots.commands.value;
-    // response.tellWithCard(text, cardHeading, cardText);
 
     //Figure out how many continents
     var continentOneSlot = intent.slots.ContinentOne,
@@ -117,17 +123,14 @@ var handleFullQueryIntent = function(intent, session, response){
     }
 
     var cardTitle = "Got full query response",
-        speech = "Processing continents " + continentOne + "," + continentTwo + "," +  continentThree + "and variables " + "," +  variableOne + "," +  variableTwo + "," +  variableThree,
+        speech = "Processing continents " + continentOne + "," + continentTwo + "," +  continentThree + " and variables " + "," +  variableOne + "," +  variableTwo + "," +  variableThree,
         speechOutput,
         repromptOutput,
         cardContent;
 
     Console.Log(continentOne);
     if (continentOne) {
-        speechOutput = {
-            speech: speech,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+        speechOutput = speech;
         cardContent = speech;
         response.tellWithCard(speechOutput, cardTitle, cardContent);
 
@@ -137,14 +140,8 @@ var handleFullQueryIntent = function(intent, session, response){
         var speech;
         speech = "I'm sorry.  I couldn't recognize your voice command.  Could you repeat your command again?";
 
-        speechOutput = {
-            speech: speech,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        repromptOutput = {
-            speech: "Could you repeat your command again?",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+        speechOutput = speech;
+        repromptOutput = "Could you repeat your command again?";
         response.ask(speechOutput, repromptOutput);
     }
 };
@@ -161,7 +158,7 @@ var handleContinentQueryIntent = function(intent, session, response){
 
     //Setting the variables based on recognized slots
     if (continentOneSlot && continentOneSlot.value){
-        continentOne = continentOneSlot.value;
+        continentOne = continentOneSlot.value.toLowerCase();
     }
     if (continentTwoSlot && continentTwoSlot.value){
         continentTwo = continentTwoSlot.value;
@@ -171,38 +168,26 @@ var handleContinentQueryIntent = function(intent, session, response){
     }
 
     var cardTitle = "Got continent query response",
-        speech = "Processing continents " + continentOne + ", " + continentTwo + ", " +  continentThree + 'Now please tell me the variables you would like to visualize for the selected continents.' ,
+        speech = "Processing continents " + continentOne + '  Now please tell me the variables you would like to visualize for the selected continents.' ,
         speechOutput,
         repromptOutput,
         cardContent;
 
     if (continentOne) {
-        speechOutput = {
-            speech: speech,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        repromptOutput = {
-            speech: "Please tell me the variables you would like to visualize for the selected countries.",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+        speechOutput = speech;
+        repromptOutput = "Please tell me the variables you would like to visualize for the selected countries.";
         cardContent = speech;
         response.askWithCard(speechOutput,repromptOutput, cardTitle, cardContent);
         return;
-
-    } else {
+    }
+    else {
         Console.Log("Some sort of error");
         //Invalid query response
         var speech;
         speech = "I'm sorry.  I couldn't recognize your voice command.  Could you repeat your command again?";
 
-        speechOutput = {
-            speech: speech,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        repromptOutput = {
-            speech: "I'm sorry.  I couldnt recognize the continents.  Could you repeat your command again?",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+        speechOutput = speech;
+        repromptOutput = "I'm sorry.  I couldnt recognize the continents.  Could you repeat your command again?";
         response.ask(speechOutput, repromptOutput);
     }
 };
@@ -219,30 +204,24 @@ var handleVariableQueryIntent = function(intent, session, response){
 
     //Setting the variables based on recognized slots
     if (variableOneSlot && variableOneSlot.value){
-        variableOne = variableOneSlot.value;
+        variableOne = variableOneSlot.value.toLowerCase();
     }
     if (variableTwoSlot && variableTwoSlot.value){
-        variableTwo = variableTwoSlot.value;
+        variableTwo = variableTwoSlot.value.toLowerCase();
     }
     if (variableThreeSlot && variableThreeSlot.value){
-        variableThree = variableThreeSlot.value;
+        variableThree = variableThreeSlot.value.toLowerCase();
     }
 
     var cardTitle = "Got variable query response",
-        speech = "Processing variables " + variableOne + ", " + variableTwo + ", " +  variableThree + 'Now please tell me the continents you would like to visualize for the selected variables.' ,
+        speech = "Processing variables " + variableOne + ", " + variableTwo + ", " +  variableThree + '.  Now please tell me the continents you would like to visualize for the selected variables.' ,
         speechOutput,
         repromptOutput,
         cardContent;
 
     if (variableOne) {
-        speechOutput = {
-            speech: speech,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        repromptOutput = {
-            speech: "Please tell me the continents you would like to visualize.",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+        speechOutput = speech;
+        repromptOutput = "Please tell me the continents you would like to visualize.";
         cardContent = speech;
         response.askWithCard(speechOutput,repromptOutput, cardTitle, cardContent);
         return;
@@ -252,14 +231,8 @@ var handleVariableQueryIntent = function(intent, session, response){
         var speech;
         speech = "I'm sorry.  I couldnt recognize the variables that you asked for.  Could you repeat the command again?";
 
-        speechOutput = {
-            speech: speech,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        repromptOutput = {
-            speech: "I'm sorry.  I couldnt recognize the variables that you asked for.  Could you repeat the command again?",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+        speechOutput = speech;
+        repromptOutput = "I'm sorry.  I couldnt recognize the variables that you asked for.  Could you repeat the command again?";
         response.ask(speechOutput, repromptOutput);
     }
 };
