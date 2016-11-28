@@ -8,26 +8,109 @@
           "type": "LIST_OF_COMMANDS"
         },
         {
-          "name": "continents",
+          "name": "ContinentOne",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "ContinentTwo",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "ContinentThree",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "VariableOne",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "VariableTwo",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "VariableThree",
+          "type": "LIST_OF_VARIABLES"
+        }
+      ]
+    },
+    {
+      "intent": "TestIntent",
+      "slots": [
+        {
+          "name": "ContinentOne",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "VariableOne",
+          "type": "LIST_OF_VARIABLES"
+        }
+      ]
+    },
+    {
+      "intent": "FullQueryIntent",
+      "slots": [
+        {
+          "name": "commands",
+          "type": "LIST_OF_COMMANDS"
+        },
+        {
+          "name": "ContinentOne",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "ContinentTwo",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "ContinentThree",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "VariableOne",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "VariableTwo",
+          "type": "LIST_OF_VARIABLES"
+        },
+        {
+          "name": "VariableThree",
+          "type": "LIST_OF_VARIABLES"
+        }
+      ]
+    },
+    {
+      "intent": "ContinentQueryIntent",
+      "slots": [
+        {
+          "name": "ContinentOne",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "ContinentTwo",
+          "type": "LIST_OF_CONTINENTS"
+        },
+        {
+          "name": "ContinentThree",
           "type": "LIST_OF_CONTINENTS"
         }
-        ,
+      ]
+    },
+    {
+      "intent": "VariableQueryIntent",
+      "slots": [
         {
-          "name": "variable1",
+          "name": "VariableOne",
           "type": "LIST_OF_VARIABLES"
         },
         {
-          "name": "variable2",
+          "name": "VariableTwo",
           "type": "LIST_OF_VARIABLES"
         },
         {
-          "name": "variable3",
+          "name": "VariableThree",
           "type": "LIST_OF_VARIABLES"
-        },
-        {
-          "name": "variable4",
-          "type": "LIST_OF_VARIABLES"
-        },
+        }
       ]
     },
     {
