@@ -4,6 +4,13 @@ var http       = require('http')
   , APP_ID     = 'amzn1.ask.skill.5ac278b7-b623-4881-8dc0-51ef374b04a0';
 //  , MTA_KEY    = '329e2427-b66b-4de7-8e9d-b602b2b83f87';
 
+'use strict';
+var AWS = require("aws-sdk");
+AWS.config.region = 'us-east-1';
+
+// Update this with sqs url
+var sqsURL = 'https://sqs.us-east-1.amazonaws.com/522674837128/CUVisuallyQueue';
+
 //Extend Amazon API by creating a  Constructor
 var CUVis = function(){
   AlexaSkill.call(this, APP_ID);
@@ -77,6 +84,23 @@ var handleTestIntent = function(intent, session, response){
     var text = intent.slots.ContinentOne.value + ' was executed using the following variables ' + intent.slots.VariableOne.value;
     var cardText = 'Test: ' + text;
     var cardHeading = 'Testing';
+
+    var queueUrl = sqsURL;
+    var queue = new AWS.SQS({params: {QueueUrl: queueUrl.toString()}});
+    var params = {
+        MessageBody: '{"Continents":'+intent.slots.ContinentOne.value+',"Variables":'+intent.slots.VariableOne.value+'}'
+        //"Test:"+intent.slots.ContinentOne.value+","+intent.slots.VariableOne.value
+    };
+
+    queue.sendMessage(params, function (err, data) {
+        if (err)
+            console.log(err, err.stack);
+        else {
+            console.log("message Sent");
+        }
+    });
+
+
     response.tellWithCard(text, cardHeading, cardText);
 };
 
@@ -128,14 +152,31 @@ var handleFullQueryIntent = function(intent, session, response){
         repromptOutput,
         cardContent;
 
-    Console.Log(continentOne);
+    console.log(continentOne);
     if (continentOne) {
         speechOutput = speech;
         cardContent = speech;
+
+        // write to SQS msg
+
+        var queueUrl = sqsURL;
+        var queue = new AWS.SQS({params: {QueueUrl: queueUrl.toString()}});
+        var params = {
+               MessageBody: "Continents:"+continentOne+","+continentTwo+","+continentThree+";Variables:"+variableOne+","+variableTwo+","+variableThree
+        };
+
+        queue.sendMessage(params, function (err, data) {
+            if (err)
+                console.log(err, err.stack);
+            else {
+                console.log("message Sent");
+            }
+        });
+
         response.tellWithCard(speechOutput, cardTitle, cardContent);
 
     } else {
-        Console.Log("Some sort of error");
+        console.log("Some sort of error");
         //Invalid query response
         var speech;
         speech = "I'm sorry.  I couldn't recognize your voice command.  Could you repeat your command again?";
@@ -177,11 +218,27 @@ var handleContinentQueryIntent = function(intent, session, response){
         speechOutput = speech;
         repromptOutput = "Please tell me the variables you would like to visualize for the selected countries.";
         cardContent = speech;
+
+        var queueUrl = sqsURL;
+        var queue = new AWS.SQS({params: {QueueUrl: queueUrl.toString()}});
+        var params = {
+            MessageBody: "Continents:"+continentOne+","+continentTwo+","+continentThree
+        };
+
+        queue.sendMessage(params, function (err, data) {
+            if (err)
+                console.log(err, err.stack);
+            else {
+                console.log("message Sent");
+            }
+        });
+
+
         response.askWithCard(speechOutput,repromptOutput, cardTitle, cardContent);
         return;
     }
     else {
-        Console.Log("Some sort of error");
+        console.log("Some sort of error");
         //Invalid query response
         var speech;
         speech = "I'm sorry.  I couldn't recognize your voice command.  Could you repeat your command again?";
@@ -223,10 +280,25 @@ var handleVariableQueryIntent = function(intent, session, response){
         speechOutput = speech;
         repromptOutput = "Please tell me the continents you would like to visualize.";
         cardContent = speech;
+
+        var queueUrl = sqsURL;
+        var queue = new AWS.SQS({params: {QueueUrl: queueUrl.toString()}});
+        var params = {
+            MessageBody: "Variables:"+variableOne+","+variableTwo+","+variableThree
+        };
+
+        queue.sendMessage(params, function (err, data) {
+            if (err)
+                console.log(err, err.stack);
+            else {
+                console.log("message Sent");
+            }
+        });
+
         response.askWithCard(speechOutput,repromptOutput, cardTitle, cardContent);
         return;
     } else {
-        Console.Log("Some sort of error");
+        console.log("Some sort of error");
         //Invalid query response
         var speech;
         speech = "I'm sorry.  I couldnt recognize the variables that you asked for.  Could you repeat the command again?";
