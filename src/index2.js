@@ -40,14 +40,14 @@ exports.handler = (event, context, callback) => {
             onLaunch(event.request,
                 event.session,
                 (sessionAttributes, speechletResponse) => {
-                    callback(null, buildResponse(sessionAttributes, speechletResponse));
-                 });
+                callback(null, buildResponse(sessionAttributes, speechletResponse));
+        });
         } else if (event.request.type === "IntentRequest") {
             onIntent(event.request,
                 event.session,
                 (sessionAttributes, speechletResponse) => {
-                    callback(null, buildResponse(sessionAttributes, speechletResponse));
-                });
+                callback(null, buildResponse(sessionAttributes, speechletResponse));
+        });
         } else if (event.request.type === "SessionEndedRequest") {
             onSessionEnded(event.request, event.session);
             callback();
@@ -91,6 +91,8 @@ function onIntent(intentRequest, session, callback) {
         handleContinentQueryIntent(intent, session, callback);
     } else if ("VariableQueryIntent" === intentName) {
         handleVariableQueryIntent(intent, session, callback);
+    } else if ("FullQueryIntent" === intentName) {
+        handleFullQueryIntent(intent, session, callback);
     } else if ("AMAZON.HelpIntent" === intentName) {
         getWelcomeResponse(callback);
     } else {
@@ -256,6 +258,79 @@ function handleVariableQueryIntent(intent, session, callback) {
     // callback(sessionAttributes,
     //         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
+
+function handleFullQueryIntent(intent, session, callback){
+    //intent.slots.commands.value
+
+    const cardTitle = "Got full query response";
+    const variableOneSlot = intent.slots.VariableOne;
+    const variableTwoSlot = intent.slots.VariableTwo;
+    const variableThreeSlot = intent.slots.VariableThree;
+    const continentOneSlot = intent.slots.ContinentOne;
+    const continentTwoSlot = intent.slots.ContinentTwo;
+    const continentThreeSlot = intent.slots.ContinentThree;
+    let repromptText = "Please tell me the continents you would like to visualize for the selected variables.";
+    let sessionAttributes = {};
+    let shouldEndSession = true;
+    let speechOutput = "";
+
+    if (continentOneSlot) {
+        var continentOne = continentOneSlot.value;
+        var continentTwo = continentTwoSlot.value;
+        var continentThree = continentThreeSlot.value;
+        var variableOne = variableOneSlot.value;
+        var variableTwo = variableTwoSlot.value;
+        var variableThree = variableThreeSlot.value;
+
+        //sessionAttributes = createFavoriteColorAttributes(favoriteColor);
+        speechOutput = "Processing continents " + continentOne + "," + continentTwo + "," +  continentThree + " and variables " + "," +  variableOne + "," +  variableTwo + "," +  variableThree ;
+        repromptText = "Please tell me the variables you would like to visualize for the selected countries.";
+
+
+        //
+        // write to SQS
+        //
+
+        var queueUrl = sqsURL;
+        var queue = new AWS.SQS({params: {QueueUrl: queueUrl.toString()}});
+        var params = {
+            //MessageBody: '{"Continents":'+continentOne+','+continentTwo+','+continentThree+'};{"Variables:"'+variableOne+','+variableTwo+','+variableThree'}'
+            MessageBody: '{"Variables":"'+variableOne+','+variableTwo+','+variableThree+'"};{"Continents":"'+continentOne+','+continentTwo+','+continentThree+'"}'
+        }
+
+        queue.sendMessage(params, function (err, data){
+            if (err) console.log(err, err.stack);
+            else {
+                console.log("message Sent");
+
+                //
+                // be sure to move the callback to here
+                // node is async
+                //
+                callback(sessionAttributes,
+                    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+            }
+
+        })
+
+    } else {
+        speechOutput = "I'm sorry.  I couldn't recognize your voice command.  Could you repeat your command again?";
+        repromptText = "I'm sorry.  I couldn't recognize your voice command.  Could you repeat your command again?";
+
+        //
+        // be sure to move the callback to here
+        // node is async
+        //
+        callback(sessionAttributes,
+            buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    }
+
+    //Need to move the callback from here to inside the SQS call.
+    // callback(sessionAttributes,
+    //         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+
 
 
 // function createFavoriteColorAttributes(string id, favoriteColor) {
