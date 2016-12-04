@@ -1,24 +1,13 @@
-CommandIntent please {commands} {VariableOne}
-CommandIntent please {commands} {VariableOne} and {VariableTwo}
-CommandIntent please {commands} {VariableOne} {VariableTwo} and {VariableThree}
-CommandIntent please {commands} {VariableOne} {VariableTwo} {VariableThree}
-
 FullQueryIntent show me {VariableOne} for {ContinentOne} {ContinentTwo} {ContinentThree}
 FullQueryIntent show me {VariableOne} {VariableTwo} for {ContinentOne} {ContinentTwo} {ContinentThree}
 FullQueryIntent show me {VariableOne} {VariableTwo} {VariableThree} for {ContinentOne} {ContinentTwo} {ContinentThree}
 
-FullQueryIntent show me {VariableOne} {VariableTwo} {VariableThree} for {ContinentOne}
-FullQueryIntent show me {VariableOne} {VariableTwo} {VariableThree} for {ContinentOne} {ContinentTwo}
-FullQueryIntent show me {VariableOne} {VariableTwo} {VariableThree} for {ContinentOne} {ContinentTwo} {ContinentThree}
-
 ContinentQueryIntent show me {ContinentOne}
 ContinentQueryIntent show me {ContinentOne} and {ContinentTwo}
-ContinentQueryIntent show me {ContinentOne} and {ContinentTwo} and {ContinentThree}
+ContinentQueryIntent show me {ContinentOne} {ContinentTwo} and {ContinentThree}
 
 TestIntent testing now {ContinentOne} and {VariableOne}
 
 VariableQueryIntent show me {VariableOne}
-VariableQueryIntent show me {VariableOne} {VariableTwo}
-VariableQueryIntent show me {VariableOne} {VariableTwo} {VariableThree}
-
-RandomIntent random words
+VariableQueryIntent show me {VariableOne} and {VariableTwo}
+VariableQueryIntent show me {VariableOne} {VariableTwo} and {VariableThree}
